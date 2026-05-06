@@ -40,7 +40,12 @@ interface Message {
   timestamp: Date;
 }
 
-export default function ExpiteeChatbot() {
+interface ExpiteeChatbotProps {
+  language?: string;
+  userName?: string;
+}
+
+export default function ExpiteeChatbot({ language = 'en', userName = 'Guest' }: ExpiteeChatbotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState('');
@@ -48,7 +53,7 @@ export default function ExpiteeChatbot() {
     {
       id: '1',
       role: 'bot',
-      text: 'Hello! I am Expitee. I work directly with our expert team to ensure your tax and digital needs are handled perfectly. How can I help you today?',
+      text: `Hello ${userName}! I am Expitee. I work directly with our expert team to ensure your tax and digital needs are handled perfectly. How can I help you today?`,
       timestamp: new Date()
     }
   ]);
@@ -117,7 +122,7 @@ export default function ExpiteeChatbot() {
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
-      console.error("Chatbot Error:", error);
+      console.error("Chatbot Error");
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'bot',

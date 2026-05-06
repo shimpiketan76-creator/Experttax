@@ -534,7 +534,7 @@ export default function App() {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error("Sign out error:", error);
+      console.error("Sign out error");
     }
   };
 
@@ -557,7 +557,7 @@ export default function App() {
       setPolishedReview('');
       setTimeout(() => setSubmittedStatus(false), 5000);
     } catch (error) {
-      console.error("Error submitting review:", error);
+      console.error("Error submitting review");
     }
   };
 
@@ -570,12 +570,12 @@ export default function App() {
 Feedback: ${reviewDraft}`;
       
       const result = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-1.5-flash",
         contents: [{ role: 'user', parts: [{ text: prompt }] }]
       });
       setPolishedReview(result.text || '');
     } catch (error) {
-      console.error("AI Polish failed:", error);
+      console.error("AI Polish failed");
     } finally {
       setIsPolishing(false);
     }

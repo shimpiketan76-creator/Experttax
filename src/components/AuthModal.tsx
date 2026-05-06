@@ -41,7 +41,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       }
       onClose();
     } catch (err: any) {
-      console.error("Auth error:", err);
+      console.error("Auth error");
       setError(err.message || "An error occurred during authentication.");
     } finally {
       setLoading(false);
@@ -56,7 +56,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       await signInWithPopup(auth, provider);
       onClose();
     } catch (err: any) {
-      console.error("Google sign-in error:", err);
+      console.error("Google sign-in error");
       setError(err.message || "Failed to sign in with Google.");
     } finally {
       setLoading(false);
