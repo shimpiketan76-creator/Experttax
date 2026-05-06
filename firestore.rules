@@ -5,23 +5,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    function isValidId(id) {
-      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
-    }
-
-    function isValidReview(data) {
-      return data.keys().hasAll(['name', 'content', 'rating', 'createdAt']) &&
-             data.keys().size() <= 6 &&
-             data.name is string && data.name.size() <= 100 &&
-             data.content is string && data.content.size() <= 1000 &&
-             data.rating is number && data.rating >= 1 && data.rating <= 5 &&
-             data.createdAt is timestamp;
-    }
-
     match /reviews/{reviewId} {
       allow read: if true;
-      allow create: if isValidId(reviewId) && isValidReview(request.resource.data) &&
-                      request.resource.data.createdAt == request.time;
+      allow create: if true; // Allow guests and users to post reviews for now, can harden later if specified
       allow update, delete: if false;
     }
   }

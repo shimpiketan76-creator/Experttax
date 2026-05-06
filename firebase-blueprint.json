@@ -1,23 +1,24 @@
 {
   "entities": {
     "Review": {
-      "title": "Customer Review",
-      "description": "A review submitted by a customer for the services provided.",
+      "title": "Review",
+      "description": "Customer feedback and reviews",
       "type": "object",
       "properties": {
-        "name": { "type": "string", "description": "The name of the reviewer." },
-        "content": { "type": "string", "description": "The review text." },
-        "rating": { "type": "number", "description": "Rating out of 5." },
-        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of the review." },
-        "lang": { "type": "string", "description": "Language code (en, hi, mr, gu)." }
+        "name": { "type": "string" },
+        "content": { "type": "string" },
+        "rating": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lang": { "type": "string" },
+        "userId": { "type": "string" }
       },
       "required": ["name", "content", "rating", "createdAt"]
     }
   },
   "firestore": {
-    "reviews": {
+    "/reviews/{reviewId}": {
       "schema": "Review",
-      "description": "Public collection of customer reviews."
+      "description": "Collection of customer reviews"
     }
   }
 }

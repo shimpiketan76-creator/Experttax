@@ -54,9 +54,7 @@ import {
 import { useState, useMemo, type FormEvent, type ChangeEvent, useEffect } from 'react';
 import { 
   onAuthStateChanged, 
-  signOut, 
-  signInWithPopup, 
-  GoogleAuthProvider,
+  signOut,
   type User as FirebaseUser 
 } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, limit } from 'firebase/firestore';
@@ -510,7 +508,16 @@ export default function App() {
   const [isPolishing, setIsPolishing] = useState(false);
   const [submittedStatus, setSubmittedStatus] = useState(false);
   
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [dbReviews, setDbReviews] = useState<{name: string, content: string, rating: number, createdAt: any}[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'), limit(10));
@@ -523,16 +530,25 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
+
   const handleSubmitReview = async () => {
     if ((!reviewDraft.trim() && !polishedReview) || submittedStatus) return;
     
     try {
       const reviewPayload = {
-        name: "Verified Customer",
+        name: user?.displayName || "Verified Customer",
         content: polishedReview || reviewDraft,
         rating: 5,
         createdAt: serverTimestamp(),
-        lang: lang
+        lang: lang,
+        userId: user?.uid || null
       };
       
       await addDoc(collection(db, 'reviews'), reviewPayload);
@@ -569,23 +585,6 @@ Feedback: ${reviewDraft}`;
   const [selectedFlyer, setSelectedFlyer] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
-  const [user, setUser] = useState<FirebaseUser | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Sign out error:", error);
-    }
-  };
 
   const filteredServices = useMemo(() => {
     let result = allServices;
@@ -680,7 +679,7 @@ Feedback: ${reviewDraft}`;
               <a href="#services" className="text-sm font-medium hover:text-emerald-600 transition-colors">{t('ourServices')}</a>
               <a href="#flyers" className="text-sm font-medium hover:text-emerald-600 transition-colors">Digital Catalog</a>
               <a href="#contact" className="text-sm font-medium hover:text-emerald-600 transition-colors">{t('contactUs')}</a>
-              
+
               {user ? (
                 <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
                   <div className="flex flex-col items-end">
@@ -787,6 +786,7 @@ Feedback: ${reviewDraft}`;
                 Access Your Account
               </button>
             )}
+
             <a href="#services" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">{t('ourServices')}</a>
             <a href="#flyers" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">Digital Catalog</a>
             <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">{t('contactUs')}</a>

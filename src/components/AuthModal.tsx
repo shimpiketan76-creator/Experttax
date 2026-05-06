@@ -4,10 +4,9 @@ import {
   X, 
   Mail, 
   Lock, 
-  Github, 
-  Chrome, 
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  Chrome
 } from 'lucide-react';
 import { 
   signInWithEmailAndPassword, 
@@ -16,7 +15,6 @@ import {
   GoogleAuthProvider 
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { cn } from '../lib/utils';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -103,7 +101,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </div>
 
               {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 text-red-600 text-sm">
+                <div className="mb-6 p-4 bg-red-100 border border-red-200 rounded-2xl flex gap-3 text-red-600 text-sm">
                   <AlertCircle size={18} className="shrink-0" />
                   <p>{error}</p>
                 </div>
