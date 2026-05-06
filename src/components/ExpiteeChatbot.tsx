@@ -101,7 +101,7 @@ export default function ExpiteeChatbot({ language = 'en', userName = 'Guest' }: 
       }));
 
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         contents: [
             ...chatHistory.map(h => ({ role: h.role, parts: h.parts })),
             { role: 'user', parts: [{ text: input }] }

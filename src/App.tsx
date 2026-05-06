@@ -58,11 +58,12 @@ import {
   type User as FirebaseUser 
 } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, limit } from 'firebase/firestore';
-import { db, auth } from './lib/firebase';
+import { db, auth, handleFirestoreError, OperationType } from './lib/firebase';
 import { cn } from './lib/utils';
 import Logo from './components/Logo';
 import ExpiteeChatbot from './components/ExpiteeChatbot';
 import AuthModal from './components/AuthModal';
+import PromoVideoGenerator from './components/PromoVideoGenerator';
 
 type Language = 'en' | 'hi' | 'mr' | 'gu';
 
@@ -526,6 +527,8 @@ export default function App() {
         ...doc.data()
       })) as any[];
       setDbReviews(reviewsData);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'reviews');
     });
     return () => unsubscribe();
   }, []);
@@ -551,7 +554,11 @@ export default function App() {
         userId: user?.uid || null
       };
       
-      await addDoc(collection(db, 'reviews'), reviewPayload);
+      try {
+        await addDoc(collection(db, 'reviews'), reviewPayload);
+      } catch (error) {
+        handleFirestoreError(error, OperationType.CREATE, 'reviews');
+      }
       setSubmittedStatus(true);
       setReviewDraft('');
       setPolishedReview('');
@@ -570,7 +577,7 @@ export default function App() {
 Feedback: ${reviewDraft}`;
       
       const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         contents: [{ role: 'user', parts: [{ text: prompt }] }]
       });
       setPolishedReview(result.text || '');
@@ -693,7 +700,7 @@ Feedback: ${reviewDraft}`;
                   </div>
                   <div className="w-9 h-9 rounded-full border-2 border-slate-100 shadow-sm overflow-hidden bg-blue-100 flex items-center justify-center">
                     {user.photoURL ? (
-                      <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                      <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                     ) : (
                       <UserCircle2 size={24} className="text-blue-600" />
                     )}
@@ -762,7 +769,7 @@ Feedback: ${reviewDraft}`;
               <div className="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md bg-blue-100 flex items-center justify-center">
                   {user.photoURL ? (
-                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   ) : (
                     <UserCircle2 size={32} className="text-blue-600" />
                   )}
@@ -1015,6 +1022,9 @@ Feedback: ${reviewDraft}`;
           )}
         </div>
       </section>
+
+      {/* Promo Video Generator Section */}
+      <PromoVideoGenerator serviceCategories={serviceCategories} />
 
       {/* Digital Catalog / Flyers Section */}
       <section id="flyers" className="py-24 bg-slate-100">
@@ -1421,7 +1431,7 @@ Feedback: ${reviewDraft}`;
                 <div className="flex -space-x-3">
                   {[1,2,3,4].map(idx => (
                     <div key={idx} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200 overflow-hidden">
-                      <img src={`https://i.pravatar.cc/150?u=${idx + 10}`} alt="User" />
+                      <img src={`https://i.pravatar.cc/150?u=${idx + 10}`} alt="User" referrerPolicy="no-referrer" />
                     </div>
                   ))}
                   <div className="w-12 h-12 rounded-full border-4 border-white bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
