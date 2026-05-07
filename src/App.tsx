@@ -883,7 +883,13 @@ export default function App() {
                 className="group relative flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden hover:shadow-2xl hover:shadow-emerald-200/50 transition-all"
               >
                 {/* Service Image */}
-                <div className="relative h-48 w-full overflow-hidden">
+                <div 
+                  className="relative h-48 w-full overflow-hidden cursor-pointer"
+                  onClick={() => {
+                    const text = `Hi, I am interested in your ${service.title} service. Please guide me.`;
+                    window.open(`https://wa.me/917410129655?text=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                >
                   <img 
                     src={service.image} 
                     alt={service.title}
@@ -899,7 +905,15 @@ export default function App() {
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
-                    <h4 className="text-xl font-bold group-hover:text-emerald-700 transition-colors leading-tight">{service.title}</h4>
+                    <h4 
+                      className="text-xl font-bold group-hover:text-emerald-700 transition-colors leading-tight cursor-pointer"
+                      onClick={() => {
+                        const text = `Hi, I am interested in your ${service.title} service. Please guide me.`;
+                        window.open(`https://wa.me/917410129655?text=${encodeURIComponent(text)}`, '_blank');
+                      }}
+                    >
+                      {service.title}
+                    </h4>
                   </div>
                   
                   {'price' in service && service.price !== 'Contact' && (
@@ -1019,7 +1033,13 @@ export default function App() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.05 }}
-                    onClick={() => setSelectedFlyer(flyer.src)}
+                    onClick={() => {
+                      setSelectedFlyer(flyer.src);
+                      const text = `Hi, I am interested in the ${flyer.title} service I saw in your gallery. Please guide me.`;
+                      setTimeout(() => {
+                        window.open(`https://wa.me/917410129655?text=${encodeURIComponent(text)}`, '_blank');
+                      }, 1000); // Small delay to let user see the image first as requested ("image need to show and redirected")
+                    }}
                     className="group relative bg-slate-800 rounded-2xl sm:rounded-[2rem] overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all cursor-pointer shadow-xl"
                   >
                     <img 
