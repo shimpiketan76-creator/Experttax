@@ -23,6 +23,8 @@ import {
   Store,
   HardHat,
   Flame,
+  Compass,
+  Zap,
   Globe2,
   Sprout,
   Coins,
@@ -198,7 +200,7 @@ const serviceCategories = [
       {
         title: "GST Registration",
         description: "New GST registration or modification for businesses.",
-        image: "https://lh3.googleusercontent.com/d/1GpyB0-ciiUznnwbiecTk6c-gmzPGAc6j",
+        image: "https://lh3.googleusercontent.com/d/1q_yIpX7lSiyBbaDsTrHRs0feacsmAXGR",
         icon: FileText,
         color: "text-blue-600",
         bg: "bg-blue-50",
@@ -218,7 +220,7 @@ const serviceCategories = [
       {
         title: "Income Tax (ITR)",
         description: "Expert filing for Salaried, Business, and Professional returns.",
-        image: "https://lh3.googleusercontent.com/d/1HL_8t8X6P-wKLQy7xfied5wANEIgWNp2",
+        image: "https://lh3.googleusercontent.com/d/1hjBxDCromMcpYjUvZ-8E9uC4kXl5IvO2",
         icon: Calculator,
         color: "text-emerald-600",
         bg: "bg-emerald-50",
@@ -238,7 +240,7 @@ const serviceCategories = [
       {
         title: "PTRC & PTEC",
         description: "Professional Tax Registration and Enrollment for employers and professionals.",
-        image: "https://images.unsplash.com/photo-1554224155-169641357599?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1c8jpxq-xiRT12grOICqiEHu-fh3_y1S3",
         icon: FileStack,
         color: "text-blue-600",
         bg: "bg-blue-50",
@@ -264,7 +266,7 @@ const serviceCategories = [
       {
         title: "Gumasta / Shop Act",
         description: "Registration and renewals for all commercial establishments.",
-        image: "https://lh3.googleusercontent.com/d/1LkKx0XKhqat4xQL3392Gc1Z5Kau7ZF6W",
+        image: "https://lh3.googleusercontent.com/d/1RcoaywGXMn_dKLBua3z4YP8qmBBbRJLF",
         icon: Store,
         color: "text-blue-700",
         bg: "bg-blue-50",
@@ -284,7 +286,7 @@ const serviceCategories = [
       {
         title: "Import Export Code",
         description: "IEC registration for businesses involved in international trade.",
-        image: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb",
+        image: "https://lh3.googleusercontent.com/d/1rosnKqaT8kN5PeXr1ODApUg0VRRY3Rw2",
         icon: Globe2,
         color: "text-cyan-700",
         bg: "bg-cyan-50",
@@ -300,6 +302,16 @@ const serviceCategories = [
         bg: "bg-blue-50",
         price: "₹3000",
         delivery: "Same Day"
+      },
+      {
+        title: "ISO Certification",
+        description: "Expert assistance for ISO 9001, 14001, and other quality standard certifications.",
+        image: "https://lh3.googleusercontent.com/d/1G7RE1MH0ormChyUiaXlFt0F9cSBkpB_B",
+        icon: ShieldCheck,
+        color: "text-blue-700",
+        bg: "bg-blue-50",
+        price: "₹3000",
+        delivery: "5 Days"
       },
       {
         title: "Company Registration",
@@ -334,7 +346,7 @@ const serviceCategories = [
       {
         title: "Labour License",
         description: "Compliance for contractors and establishments with labor force.",
-        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1BaHzhiLXMndOkvxzVvJA9mX6F_dlDkK9",
         icon: HardHat,
         color: "text-yellow-700",
         bg: "bg-yellow-50",
@@ -344,7 +356,7 @@ const serviceCategories = [
       {
         title: "APEDA Registration",
         description: "Registration with Agricultural and Processed Food Products Export Development Authority.",
-        image: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/10B_VFzAo9SRfrauvP4BYAJUtcKQeXO7G",
         icon: Sprout,
         color: "text-emerald-700",
         bg: "bg-emerald-50",
@@ -354,7 +366,7 @@ const serviceCategories = [
       {
         title: "Fire NOC",
         description: "Fire Safety No Objection Certificate for commercial and residential buildings.",
-        image: "https://images.unsplash.com/photo-1582213708522-f88cbc8482aa?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1Mv91_tgVeFWYRJHnaJ9eZGSnBM2dV19X",
         icon: Flame,
         color: "text-red-600",
         bg: "bg-red-50",
@@ -420,7 +432,7 @@ const serviceCategories = [
       {
         title: "Police Clearance (PCC)",
         description: "PCC documentation for employment and visa requirements.",
-        image: "https://images.unsplash.com/photo-1557597774-9d2739f85a9a?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1yigassitfsEiG4zvKXS94JQEMkz403ql",
         icon: ShieldAlert,
         color: "text-red-700",
         bg: "bg-red-50",
@@ -446,6 +458,16 @@ const serviceCategories = [
         bg: "bg-cyan-50",
         price: "₹500",
         delivery: "15 Days"
+      },
+      {
+        title: "Digital Signature (DSC)",
+        description: "Class 3 DSC for GST, ITR, and e-Tendering with tokens.",
+        image: "https://lh3.googleusercontent.com/d/1R_cVadKKV-KLQ6dh3LQEBSJk9nqMkwhE",
+        icon: PenLine,
+        color: "text-purple-600",
+        bg: "bg-purple-50",
+        price: "₹1500",
+        delivery: "Same Day"
       }
     ]
   },
@@ -456,7 +478,7 @@ const serviceCategories = [
       {
         title: "Business/Personal Loan",
         description: "Financial assistance with low interest rates and fast approval.",
-        image: "https://images.unsplash.com/photo-1550565118-3d143c4a33ed?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1FOK02VF3Rk0i311nAIAuucOzsAtUjeU1",
         icon: Coins,
         color: "text-cyan-600",
         bg: "bg-cyan-50"
@@ -464,7 +486,7 @@ const serviceCategories = [
       {
         title: "Home Loan / LAP",
         description: "Property-linked loans and fresh home purchase financing.",
-        image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1x03yP8o2GQlTi872xBOj0aCF3BD1Lu66",
         icon: Home,
         color: "text-slate-600",
         bg: "bg-slate-50"
@@ -480,7 +502,7 @@ const serviceCategories = [
       {
         title: "Investment Planning",
         description: "Strategic planning for wealth growth and tax savings.",
-        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1hfywzxKvfQeQSLWqARhSpnixxhnDa6UN",
         icon: TrendingUp,
         color: "text-blue-600",
         bg: "bg-blue-50"
@@ -494,7 +516,7 @@ const serviceCategories = [
       {
         title: "Document Work",
         description: "All types of drafting, notarization, and legal documentation.",
-        image: "https://images.unsplash.com/photo-1586282391129-59a998fd034c?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1T-erJiLiSdX3DWZCHpPXIEqk7YmtBQ0A",
         icon: FileStack,
         color: "text-slate-600",
         bg: "bg-slate-50"
@@ -965,12 +987,12 @@ export default function App() {
                   { id: '1', src: "https://lh3.googleusercontent.com/d/1AxuQ-bB0pFnth-yQTvI-2HugPvuFpUbx", title: "FSSAI Food License" },
                   { id: '2', src: "https://lh3.googleusercontent.com/d/1GpyB0-ciiUznnwbiecTk6c-gmzPGAc6j", title: "GST Registration" },
                   { id: '3', src: "https://lh3.googleusercontent.com/d/1ju4C3jlFHQIxgtx_QhKyspJN7dZdNbga", title: "Passport Services" },
-                  { id: '4', src: "https://lh3.googleusercontent.com/d/1LkKx0XKhqat4xQL3392Gc1Z5Kau7ZF6W", title: "Shop Act License" },
+                  { id: '4', src: "https://lh3.googleusercontent.com/d/1RcoaywGXMn_dKLBua3z4YP8qmBBbRJLF", title: "Shop Act License" },
                   { id: '5', src: "https://lh3.googleusercontent.com/d/1HL_8t8X6P-wKLQy7xfied5wANEIgWNp2", title: "Income Tax Filing" },
                   { id: '6', src: "https://lh3.googleusercontent.com/d/17rIgROFxZXpL8kW45IdMZwUKBp8ZbzFy", title: "PAN Card Services" },
                   { id: '7', src: "https://lh3.googleusercontent.com/d/14XMRkHPS3uPMZ93fyfgDYXew7h9HtEpH", title: "MSME Udyam" },
-                  { id: '8', src: "https://lh3.googleusercontent.com/d/1pN4_F9MqS2MJyaaG5qfDZFKwnli_S0k9", title: "Digital Signature" },
-                  { id: '10', src: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb", title: "IEC Code (Import Export)" },
+                  { id: '8', src: "https://lh3.googleusercontent.com/d/1R_cVadKKV-KLQ6dh3LQEBSJk9nqMkwhE", title: "Digital Signature" },
+                  { id: '10', src: "https://lh3.googleusercontent.com/d/1rosnKqaT8kN5PeXr1ODApUg0VRRY3Rw2", title: "IEC Code (Import Export)" },
                   { id: '11', src: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb", title: "LMPC Certificate" },
                   { id: '12', src: "https://lh3.googleusercontent.com/d/1kz4VTyvNOThuH5LiD7vG3dq017Vw82ij", title: "Partnership Deed" },
                   { id: '13', src: "https://lh3.googleusercontent.com/d/1fNgjt-nrsMXv9y81FjzLsRZA5LoOwy9Q", title: "Food Business Services" },
@@ -979,9 +1001,17 @@ export default function App() {
                   { id: '16', src: "https://lh3.googleusercontent.com/d/1PSREeR-1IpNhe1NXS9DQqhoNlcbjh4cj", title: "Senior Citizen Card" },
                   { id: '17', src: "https://lh3.googleusercontent.com/d/1O5WE3Psk8Dr2CJSVbpLEL3b5g2ucx2NJ", title: "Voter ID" },
                   { id: '18', src: "https://lh3.googleusercontent.com/d/1s_-425xkI9h-PYB0pdnJkFtg6-4l2ECH", title: "Aadhaar Correction" },
-                  { id: '19', src: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=800", title: "APEDA Registration" },
-                  { id: '20', src: "https://images.unsplash.com/photo-1582213708522-f88cbc8482aa?auto=format&fit=crop&q=80&w=800", title: "Fire NOC" },
-                  { id: '21', src: "https://images.unsplash.com/photo-1554224155-169641357599?auto=format&fit=crop&q=80&w=800", title: "PTRC & PTEC" }
+                  { id: '19', src: "https://lh3.googleusercontent.com/d/10B_VFzAo9SRfrauvP4BYAJUtcKQeXO7G", title: "APEDA Registration" },
+                  { id: '20', src: "https://lh3.googleusercontent.com/d/1Mv91_tgVeFWYRJHnaJ9eZGSnBM2dV19X", title: "Fire NOC" },
+                  { id: '21', src: "https://lh3.googleusercontent.com/d/1FOK02VF3Rk0i311nAIAuucOzsAtUjeU1", title: "Personal Loan" },
+                  { id: '22', src: "https://lh3.googleusercontent.com/d/1x03yP8o2GQlTi872xBOj0aCF3BD1Lu66", title: "Home Loan" },
+                  { id: '23', src: "https://lh3.googleusercontent.com/d/1c8jpxq-xiRT12grOICqiEHu-fh3_y1S3", title: "PTRC & PTEC" },
+                  { id: '24', src: "https://lh3.googleusercontent.com/d/1BaHzhiLXMndOkvxzVvJA9mX6F_dlDkK9", title: "Labour License" },
+                  { id: '25', src: "https://lh3.googleusercontent.com/d/1yigassitfsEiG4zvKXS94JQEMkz403ql", title: "Police Clearance (PCC)" },
+                  { id: '26', src: "https://lh3.googleusercontent.com/d/1T-erJiLiSdX3DWZCHpPXIEqk7YmtBQ0A", title: "Document Work" },
+                  { id: '27', src: "https://lh3.googleusercontent.com/d/108Y_aG8q9ClUgLL3LN42dETTZ_2cin-m", title: "Legal Drafting" },
+                  { id: '28', src: "https://lh3.googleusercontent.com/d/1hfywzxKvfQeQSLWqARhSpnixxhnDa6UN", title: "Investment Planning" },
+                  { id: '29', src: "https://lh3.googleusercontent.com/d/1G7RE1MH0ormChyUiaXlFt0F9cSBkpB_B", title: "ISO Certificate Expert" }
                 ].map((flyer, i) => (
                   <motion.div
                     key={flyer.id}
@@ -995,10 +1025,10 @@ export default function App() {
                     <img 
                       src={flyer.src} 
                       alt={flyer.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 aspect-[3/4]"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 aspect-video"
                       referrerPolicy="no-referrer"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://placehold.co/600x800?text=Upload+Your+Image";
+                        (e.target as HTMLImageElement).src = "https://placehold.co/800x450?text=Upload+Your+Image";
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-6 text-center">
@@ -1336,6 +1366,87 @@ export default function App() {
       </section>
 
 
+
+      {/* CEO Message Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 skew-x-[-12deg] translate-x-1/2"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-4 relative flex justify-center lg:justify-start"
+            >
+              <div className="relative z-10 w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-8 border-white shadow-2xl shadow-slate-200">
+                <img 
+                  src="https://lh3.googleusercontent.com/d/1YbyzidFE5QHS9BE-vseLNzVdoZvIJmZh" 
+                  alt="CEO" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-blue-600 p-4 sm:p-6 rounded-2xl text-white shadow-xl shadow-blue-200 z-20">
+                <div className="text-2xl font-black mb-0.5">10+</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest opacity-80">Years EXP</div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="lg:col-span-8 space-y-8"
+            >
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-bold tracking-wide">
+                <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
+                CEO Message
+              </div>
+              
+              <h2 className="text-4xl sm:text-5xl font-black text-slate-900 leading-tight">
+                Our Commitment to <br/>
+                <span className="text-blue-600">Your Business Growth</span>
+              </h2>
+
+              <div className="relative">
+                <span className="absolute -top-10 -left-10 text-8xl text-slate-100 font-serif leading-none italic pointer-events-none">"</span>
+                <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed italic relative z-10">
+                  Work will be guaranteed, trust on us. We will do best-in-class services. Having so many satisfied customers, our goal is to simplify complex compliances so you can focus on building your dreams.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6 pt-4">
+                {[
+                  { title: "Guaranteed Work", icon: ShieldCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
+                  { title: "Best-in-Class Support", icon: Compass, color: "text-blue-600", bg: "bg-blue-50" },
+                  { title: "Trusted by Many", icon: Users2, color: "text-orange-600", bg: "bg-orange-50" },
+                  { title: "Expert Guidance", icon: Zap, color: "text-purple-600", bg: "bg-purple-50" }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className={cn("p-3 rounded-xl", item.bg, item.color)}>
+                      <item.icon size={24} />
+                    </div>
+                    <span className="font-bold text-slate-800">{item.title}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-8 border-t border-slate-100">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-[2px] bg-blue-600 rounded-full"></div>
+                  <div>
+                    <div className="text-xl font-black text-slate-900">Shubhangi Jagtap</div>
+                    <div className="text-sm font-bold text-blue-600">Founder & CEO</div>
+                    <div className="text-slate-500 font-bold tracking-widest text-[10px] uppercase mt-1">Expert Tax & Digital Services</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* Testimonials Section */}
       <section className="py-24 bg-slate-50 overflow-hidden">
