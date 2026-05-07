@@ -4,7 +4,6 @@
  */
 
 import { motion, AnimatePresence } from 'motion/react';
-import { GoogleGenAI } from "@google/genai";
 import { 
   Phone, 
   Mail, 
@@ -48,26 +47,13 @@ import {
   Star,
   Languages,
   MessageSquareQuote,
-  PenLine,
-  Sparkles
+  PenLine
 } from 'lucide-react';
-import { useState, useMemo, type FormEvent, type ChangeEvent, useEffect } from 'react';
-import { 
-  onAuthStateChanged, 
-  signOut,
-  type User as FirebaseUser 
-} from 'firebase/auth';
-import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, limit } from 'firebase/firestore';
-import { db, auth, handleFirestoreError, OperationType } from './lib/firebase';
+import { useState, useMemo, type FormEvent, type ChangeEvent } from 'react';
 import { cn } from './lib/utils';
 import Logo from './components/Logo';
-import ExpiteeChatbot from './components/ExpiteeChatbot';
-import AuthModal from './components/AuthModal';
-import PromoVideoGenerator from './components/PromoVideoGenerator';
 
 type Language = 'en' | 'hi' | 'mr' | 'gu';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const translations = {
   en: {
@@ -212,7 +198,7 @@ const serviceCategories = [
       {
         title: "GST Registration",
         description: "New GST registration or modification for businesses.",
-        image: "https://images.unsplash.com/photo-1554224155-169641357599?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1GpyB0-ciiUznnwbiecTk6c-gmzPGAc6j",
         icon: FileText,
         color: "text-blue-600",
         bg: "bg-blue-50",
@@ -222,7 +208,7 @@ const serviceCategories = [
       {
         title: "FSSAI Registration",
         description: "Basic registration for small food businesses and startups.",
-        image: "https://images.unsplash.com/photo-1504386106331-3e4e71712b38?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1AxuQ-bB0pFnth-yQTvI-2HugPvuFpUbx",
         icon: Utensils,
         color: "text-orange-600",
         bg: "bg-orange-50",
@@ -232,7 +218,7 @@ const serviceCategories = [
       {
         title: "Income Tax (ITR)",
         description: "Expert filing for Salaried, Business, and Professional returns.",
-        image: "https://images.unsplash.com/photo-1613665813446-82a78c44b8fe?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1HL_8t8X6P-wKLQy7xfied5wANEIgWNp2",
         icon: Calculator,
         color: "text-emerald-600",
         bg: "bg-emerald-50",
@@ -242,12 +228,22 @@ const serviceCategories = [
       {
         title: "FSSAI License",
         description: "State or Central license for large food manufacturers or caterers.",
-        image: "https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1AxuQ-bB0pFnth-yQTvI-2HugPvuFpUbx",
         icon: Utensils,
         color: "text-emerald-600",
         bg: "bg-emerald-50",
         price: "₹10000",
         delivery: "10 Days"
+      },
+      {
+        title: "PTRC & PTEC",
+        description: "Professional Tax Registration and Enrollment for employers and professionals.",
+        image: "https://images.unsplash.com/photo-1554224155-169641357599?auto=format&fit=crop&q=80&w=800",
+        icon: FileStack,
+        color: "text-blue-600",
+        bg: "bg-blue-50",
+        price: "₹1500",
+        delivery: "Same Day"
       }
     ]
   },
@@ -258,7 +254,7 @@ const serviceCategories = [
       {
         title: "Udyam (MSME)",
         description: "MSME registration for small and medium enterprises to avail benefits.",
-        image: "https://images.unsplash.com/photo-1664575602276-acd073f104c1?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/14XMRkHPS3uPMZ93fyfgDYXew7h9HtEpH",
         icon: Factory,
         color: "text-purple-600",
         bg: "bg-purple-50",
@@ -268,7 +264,7 @@ const serviceCategories = [
       {
         title: "Gumasta / Shop Act",
         description: "Registration and renewals for all commercial establishments.",
-        image: "https://images.unsplash.com/photo-1582733775063-4705371fe03e?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1LkKx0XKhqat4xQL3392Gc1Z5Kau7ZF6W",
         icon: Store,
         color: "text-blue-700",
         bg: "bg-blue-50",
@@ -288,7 +284,7 @@ const serviceCategories = [
       {
         title: "Import Export Code",
         description: "IEC registration for businesses involved in international trade.",
-        image: "https://images.unsplash.com/photo-1549413280-9993306db30e?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb",
         icon: Globe2,
         color: "text-cyan-700",
         bg: "bg-cyan-50",
@@ -298,7 +294,7 @@ const serviceCategories = [
       {
         title: "LMPC Certificate",
         description: "Legal Metrology Packaged Commodities certificate for exporters.",
-        image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb",
         icon: FileCheck2,
         color: "text-blue-600",
         bg: "bg-blue-50",
@@ -318,7 +314,7 @@ const serviceCategories = [
       {
         title: "Partnership / LLP",
         description: "Legal drafting and registration of Partnership firms and LLPs.",
-        image: "https://images.unsplash.com/photo-1600880210119-75ee99bbaba1?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1kz4VTyvNOThuH5LiD7vG3dq017Vw82ij",
         icon: Users2,
         color: "text-emerald-700",
         bg: "bg-emerald-50",
@@ -328,7 +324,7 @@ const serviceCategories = [
       {
         title: "Trade License",
         description: "Commercial trade permits from local authorities and corporations.",
-        image: "https://images.unsplash.com/photo-1510444333282-971ef27c4442?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1dUijPJYFXKpA9eh7VfjHr5KQfOBbVfZg",
         icon: Briefcase,
         color: "text-amber-700",
         bg: "bg-amber-50",
@@ -344,6 +340,26 @@ const serviceCategories = [
         bg: "bg-yellow-50",
         price: "Contact",
         delivery: "15 Days"
+      },
+      {
+        title: "APEDA Registration",
+        description: "Registration with Agricultural and Processed Food Products Export Development Authority.",
+        image: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=800",
+        icon: Sprout,
+        color: "text-emerald-700",
+        bg: "bg-emerald-50",
+        price: "₹10000",
+        delivery: "10 Days"
+      },
+      {
+        title: "Fire NOC",
+        description: "Fire Safety No Objection Certificate for commercial and residential buildings.",
+        image: "https://images.unsplash.com/photo-1582213708522-f88cbc8482aa?auto=format&fit=crop&q=80&w=800",
+        icon: Flame,
+        color: "text-red-600",
+        bg: "bg-red-50",
+        price: "Contact",
+        delivery: "20 Days"
       }
     ]
   },
@@ -354,7 +370,7 @@ const serviceCategories = [
       {
         title: "PAN Card",
         description: "New PAN applications, corrections, and reprints with minimal documentation.",
-        image: "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/17rIgROFxZXpL8kW45IdMZwUKBp8ZbzFy",
         icon: CreditCard,
         color: "text-blue-600",
         bg: "bg-blue-50",
@@ -364,7 +380,7 @@ const serviceCategories = [
       {
         title: "Aadhaar Card Update",
         description: "Correction of Name, DOB, Address, and mobile number linkage.",
-        image: "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1s_-425xkI9h-PYB0pdnJkFtg6-4l2ECH",
         icon: Fingerprint,
         color: "text-emerald-600",
         bg: "bg-emerald-50",
@@ -374,7 +390,7 @@ const serviceCategories = [
       {
         title: "Voter ID",
         description: "Fresh registration, address changes, and card reprints for all citizens.",
-        image: "https://images.unsplash.com/photo-1540910419892-f39a62a1bf3d?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1O5WE3Psk8Dr2CJSVbpLEL3b5g2ucx2NJ",
         icon: Contact2,
         color: "text-indigo-600",
         bg: "bg-indigo-50",
@@ -384,7 +400,7 @@ const serviceCategories = [
       {
         title: "Passport Assistance",
         description: "Complete support for Fresh, Renewal, and Tatkal passport applications.",
-        image: "https://images.unsplash.com/photo-1544333346-ce7b5482436d?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1ju4C3jlFHQIxgtx_QhKyspJN7dZdNbga",
         icon: Globe2,
         color: "text-sky-600",
         bg: "bg-sky-50",
@@ -394,7 +410,7 @@ const serviceCategories = [
       {
         title: "Driving License",
         description: "Learning license, permanent license, and renewal assistance.",
-        image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1SUYzDcdou60Y_GvXk3rbjfE93lDwbelz",
         icon: Car,
         color: "text-slate-700",
         bg: "bg-slate-100",
@@ -414,7 +430,7 @@ const serviceCategories = [
       {
         title: "Senior Citizen Card",
         description: "Official registration and benefits card for senior citizens.",
-        image: "https://images.unsplash.com/photo-1441613292833-041f8ee33140?auto=format&fit=crop&q=80&w=800",
+        image: "https://lh3.googleusercontent.com/d/1PSREeR-1IpNhe1NXS9DQqhoNlcbjh4cj",
         icon: UserCircle2,
         color: "text-orange-600",
         bg: "bg-orange-50",
@@ -505,87 +521,36 @@ export default function App() {
   const t = (key: keyof typeof translations['en']) => translations[lang][key] || translations['en'][key];
 
   const [reviewDraft, setReviewDraft] = useState('');
-  const [polishedReview, setPolishedReview] = useState('');
-  const [isPolishing, setIsPolishing] = useState(false);
   const [submittedStatus, setSubmittedStatus] = useState(false);
   
-  const [user, setUser] = useState<FirebaseUser | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [dbReviews, setDbReviews] = useState<{name: string, content: string, rating: number, createdAt: any}[]>([]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'), limit(10));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const reviewsData = snapshot.docs.map(doc => ({
-        ...doc.data()
-      })) as any[];
-      setDbReviews(reviewsData);
-    }, (error) => {
-      handleFirestoreError(error, OperationType.GET, 'reviews');
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Sign out error");
+  const [dbReviews] = useState<{name: string, content: string, rating: number, createdAt: string}[]>([
+    {
+      name: "Rahul Sharma",
+      content: "Excellent service! Got my GST registration done in just one day. Very professional team.",
+      rating: 5,
+      createdAt: "2024-03-15"
+    },
+    {
+      name: "Priya Patil",
+      content: "Expert team for FSSAI registration. They handled everything transparently and quickly.",
+      rating: 5,
+      createdAt: "2024-03-10"
+    },
+    {
+      name: "Amit Gupta",
+      content: "Best place in Boisar for ITR filing and business consulting. Highly recommended!",
+      rating: 5,
+      createdAt: "2024-03-05"
     }
-  };
+  ]);
 
   const handleSubmitReview = async () => {
-    if ((!reviewDraft.trim() && !polishedReview) || submittedStatus) return;
+    if (!reviewDraft.trim() || submittedStatus) return;
     
-    try {
-      const reviewPayload = {
-        name: user?.displayName || "Verified Customer",
-        content: polishedReview || reviewDraft,
-        rating: 5,
-        createdAt: serverTimestamp(),
-        lang: lang,
-        userId: user?.uid || null
-      };
-      
-      try {
-        await addDoc(collection(db, 'reviews'), reviewPayload);
-      } catch (error) {
-        handleFirestoreError(error, OperationType.CREATE, 'reviews');
-      }
-      setSubmittedStatus(true);
-      setReviewDraft('');
-      setPolishedReview('');
-      setTimeout(() => setSubmittedStatus(false), 5000);
-    } catch (error) {
-      console.error("Error submitting review");
-    }
-  };
-
-  const handleAiPolish = async () => {
-    if (!reviewDraft.trim() || isPolishing) return;
-    setIsPolishing(true);
-    try {
-      const prompt = `Rewrite the following short customer feedback into a more professional, detailed, and positive review for a business named "EXPERT TAX AND DIGITAL SERVICES" in Boisar. The review should be in ${lang === 'hi' ? 'Hindi' : lang === 'mr' ? 'Marathi' : lang === 'gu' ? 'Gujarati' : 'English'}. Keep it authentic but polished.
-
-Feedback: ${reviewDraft}`;
-      
-      const result = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [{ role: 'user', parts: [{ text: prompt }] }]
-      });
-      setPolishedReview(result.text || '');
-    } catch (error) {
-      console.error("AI Polish failed");
-    } finally {
-      setIsPolishing(false);
-    }
+    // Static behavior: just show success message
+    setSubmittedStatus(true);
+    setReviewDraft('');
+    setTimeout(() => setSubmittedStatus(false), 5000);
   };
 
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -687,34 +652,6 @@ Feedback: ${reviewDraft}`;
               <a href="#flyers" className="text-sm font-medium hover:text-emerald-600 transition-colors">Digital Catalog</a>
               <a href="#contact" className="text-sm font-medium hover:text-emerald-600 transition-colors">{t('contactUs')}</a>
 
-              {user ? (
-                <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
-                  <div className="flex flex-col items-end">
-                    <span className="text-xs font-bold text-slate-900 truncate max-w-[100px]">{user.displayName || user.email?.split('@')[0]}</span>
-                    <button 
-                      onClick={handleSignOut}
-                      className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:text-red-600"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                  <div className="w-9 h-9 rounded-full border-2 border-slate-100 shadow-sm overflow-hidden bg-blue-100 flex items-center justify-center">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                    ) : (
-                      <UserCircle2 size={24} className="text-blue-600" />
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => setShowAuthModal(true)}
-                  className="px-5 py-2 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95"
-                >
-                  Login
-                </button>
-              )}
-
               <a 
                 href="tel:7410129655" 
                 className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md active:scale-95"
@@ -764,35 +701,6 @@ Feedback: ${reviewDraft}`;
                 ))}
               </div>
             </div>
-
-            {user ? (
-              <div className="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl">
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md bg-blue-100 flex items-center justify-center">
-                  {user.photoURL ? (
-                    <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                  ) : (
-                    <UserCircle2 size={32} className="text-blue-600" />
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-slate-900">{user.displayName || user.email?.split('@')[0]}</span>
-                  <button 
-                    onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
-                    className="text-xs font-black uppercase tracking-widest text-red-500"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button 
-                onClick={() => { setShowAuthModal(true); setIsMenuOpen(false); }}
-                className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all shadow-xl shadow-slate-200"
-              >
-                <UserCircle2 size={24} />
-                Access Your Account
-              </button>
-            )}
 
             <a href="#services" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">{t('ourServices')}</a>
             <a href="#flyers" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">Digital Catalog</a>
@@ -1023,72 +931,94 @@ Feedback: ${reviewDraft}`;
         </div>
       </section>
 
-      {/* Promo Video Generator Section */}
-      <PromoVideoGenerator serviceCategories={serviceCategories} />
 
-      {/* Digital Catalog / Flyers Section */}
-      <section id="flyers" className="py-24 bg-slate-100">
+
+      {/* Digital Catalog / Gallery Section */}
+      <section id="gallery" className="py-24 bg-slate-900 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6"
             >
-              <h2 className="text-sm font-bold text-emerald-600 uppercase tracking-widest mb-3">Promotions</h2>
-              <h3 className="text-4xl font-bold text-slate-900 mb-4">Official Service Flyers</h3>
-              <p className="text-slate-500 max-w-lg mx-auto">
-                Detailed visual guides for our most requested services. Click to view high-resolution details.
-              </p>
+              <FileCheck2 size={14} />
+              <span>Service Gallery</span>
             </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight font-display"
+            >
+              Our Service <span className="text-emerald-500">Portfolio</span>
+            </motion.h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
+              Below are our service banners. To use your own images, upload them to the AI Studio file explorer and update the filenames in the code.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: "Fire NOC Maharashtra", img: "input_file_0.png", desc: "New NOC, Renewal & Compliance" },
-              { title: "Passport Services", img: "input_file_1.png", desc: "Fresh, Renewal & Tatkal" },
-              { title: "APEDA Registration", img: "input_file_2.png", desc: "Export Development Authority" },
-              { title: "FSSAI Food License", img: "input_file_3.png", desc: "Registration & Compliance" },
-              { title: "GST Registration", img: "input_file_4.png", desc: "Expert GST Solutions" },
-              { title: "PAN & Aadhaar", img: "input_file_5.png", desc: "Correction & Name Change" },
-              { title: "Personal Loans", img: "input_file_8.png", desc: "Easy Approval & Low ROI" },
-              { title: "Food Business License", img: "input_file_9.png", desc: "Fast FSSAI Registration" },
-              { title: "GST Same Day", img: "input_file_10.png", desc: "Quick Business Setup" },
-              { title: "Service Overview", img: "input_file_7.png", desc: "One-stop Digital Solution" },
-              { title: "Digital Catalog", img: "input_file_6.png", desc: "Our Full Range of Services" },
-              { title: "PAN Card Expert", img: "input_file_11.png", desc: "Trusted Documentation" }
-            ].map((flyer, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="group relative cursor-pointer overflow-hidden rounded-[2.5rem] bg-white shadow-xl shadow-slate-200/50"
-              >
-                <div className="aspect-[3/4] overflow-hidden">
-                  <img 
-                    src={flyer.img} 
-                    alt={flyer.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                  <h4 className="text-xl font-bold mb-1">{flyer.title}</h4>
-                  <p className="text-emerald-400 text-sm font-semibold">{flyer.desc}</p>
-                  <a 
-                    href={`https://wa.me/917410129655?text=Hi, I saw your ${flyer.title} flyer and want to know more about this service.`}
-                    target="_blank"
-                    rel="no-referrer"
-                    className="mt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity"
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {[
+                  { id: '1', src: "https://lh3.googleusercontent.com/d/1AxuQ-bB0pFnth-yQTvI-2HugPvuFpUbx", title: "FSSAI Food License" },
+                  { id: '2', src: "https://lh3.googleusercontent.com/d/1GpyB0-ciiUznnwbiecTk6c-gmzPGAc6j", title: "GST Registration" },
+                  { id: '3', src: "https://lh3.googleusercontent.com/d/1ju4C3jlFHQIxgtx_QhKyspJN7dZdNbga", title: "Passport Services" },
+                  { id: '4', src: "https://lh3.googleusercontent.com/d/1LkKx0XKhqat4xQL3392Gc1Z5Kau7ZF6W", title: "Shop Act License" },
+                  { id: '5', src: "https://lh3.googleusercontent.com/d/1HL_8t8X6P-wKLQy7xfied5wANEIgWNp2", title: "Income Tax Filing" },
+                  { id: '6', src: "https://lh3.googleusercontent.com/d/17rIgROFxZXpL8kW45IdMZwUKBp8ZbzFy", title: "PAN Card Services" },
+                  { id: '7', src: "https://lh3.googleusercontent.com/d/14XMRkHPS3uPMZ93fyfgDYXew7h9HtEpH", title: "MSME Udyam" },
+                  { id: '8', src: "https://lh3.googleusercontent.com/d/1pN4_F9MqS2MJyaaG5qfDZFKwnli_S0k9", title: "Digital Signature" },
+                  { id: '10', src: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb", title: "IEC Code (Import Export)" },
+                  { id: '11', src: "https://lh3.googleusercontent.com/d/1bJLZ7klwRY-S2mi4nxgArMxVjFk5Dudb", title: "LMPC Certificate" },
+                  { id: '12', src: "https://lh3.googleusercontent.com/d/1kz4VTyvNOThuH5LiD7vG3dq017Vw82ij", title: "Partnership Deed" },
+                  { id: '13', src: "https://lh3.googleusercontent.com/d/1fNgjt-nrsMXv9y81FjzLsRZA5LoOwy9Q", title: "Food Business Services" },
+                  { id: '14', src: "https://lh3.googleusercontent.com/d/1dUijPJYFXKpA9eh7VfjHr5KQfOBbVfZg", title: "Trade License" },
+                  { id: '15', src: "https://lh3.googleusercontent.com/d/1SUYzDcdou60Y_GvXk3rbjfE93lDwbelz", title: "Driving License" },
+                  { id: '16', src: "https://lh3.googleusercontent.com/d/1PSREeR-1IpNhe1NXS9DQqhoNlcbjh4cj", title: "Senior Citizen Card" },
+                  { id: '17', src: "https://lh3.googleusercontent.com/d/1O5WE3Psk8Dr2CJSVbpLEL3b5g2ucx2NJ", title: "Voter ID" },
+                  { id: '18', src: "https://lh3.googleusercontent.com/d/1s_-425xkI9h-PYB0pdnJkFtg6-4l2ECH", title: "Aadhaar Correction" },
+                  { id: '19', src: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=800", title: "APEDA Registration" },
+                  { id: '20', src: "https://images.unsplash.com/photo-1582213708522-f88cbc8482aa?auto=format&fit=crop&q=80&w=800", title: "Fire NOC" },
+                  { id: '21', src: "https://images.unsplash.com/photo-1554224155-169641357599?auto=format&fit=crop&q=80&w=800", title: "PTRC & PTEC" }
+                ].map((flyer, i) => (
+                  <motion.div
+                    key={flyer.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    onClick={() => setSelectedFlyer(flyer.src)}
+                    className="group relative bg-slate-800 rounded-2xl sm:rounded-[2rem] overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all cursor-pointer shadow-xl"
                   >
-                    Send WhatsApp Enquiry <ChevronRight size={14} />
-                  </a>
-                </div>
-              </motion.div>
-            ))}
+                    <img 
+                      src={flyer.src} 
+                      alt={flyer.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 aspect-[3/4]"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://placehold.co/600x800?text=Upload+Your+Image";
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4 sm:p-6 text-center">
+                      <p className="text-emerald-400 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-1">{flyer.title}</p>
+                      <p className="text-white text-[10px] sm:text-sm font-medium">View Full Image</p>
+                    </div>
+                  </motion.div>
+                ))}
+          </div>
+          
+          <div className="mt-16 text-center">
+            <a 
+              href="https://wa.me/917410129655?text=Hi, I want to know more about your services."
+              target="_blank"
+              rel="no-referrer"
+              className="inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/40"
+            >
+              Contact Us on WhatsApp
+              <ChevronRight size={18} />
+            </a>
           </div>
         </div>
       </section>
@@ -1405,300 +1335,7 @@ Feedback: ${reviewDraft}`;
         </div>
       </section>
 
-      {/* AI Review Assistant Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-            >
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6">
-                <Sparkles size={14} />
-                <span>{t('reviewSub')}</span>
-              </div>
-              <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight font-display">
-                Your Words Matter <br />
-                <span className="text-emerald-600">to Our Experts.</span>
-              </h3>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                We believe in continuous improvement. Use our AI assistant to help you write a perfect review about your experience with <b>Expert Tax and Digital Services</b>.
-              </p>
-              
-              <div className="flex items-center gap-6 p-6 bg-slate-50 rounded-[2rem] border border-slate-100">
-                <div className="flex -space-x-3">
-                  {[1,2,3,4].map(idx => (
-                    <div key={idx} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200 overflow-hidden">
-                      <img src={`https://i.pravatar.cc/150?u=${idx + 10}`} alt="User" referrerPolicy="no-referrer" />
-                    </div>
-                  ))}
-                  <div className="w-12 h-12 rounded-full border-4 border-white bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                    +500
-                  </div>
-                </div>
-                <div>
-                  <div className="flex gap-1 mb-1">
-                    {[1,2,3,4,5].map(s => <Star key={s} size={14} className="text-amber-400 fill-amber-400" />)}
-                  </div>
-                  <p className="text-sm font-bold text-slate-900">Average 4.9/5 Rating</p>
-                  <p className="text-xs text-slate-500 font-medium">From verified local customers</p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="bg-white p-8 md:p-10 rounded-[3rem] shadow-2xl shadow-slate-200 border border-slate-100 relative"
-            >
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-black text-slate-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <PenLine size={16} className="text-blue-600" />
-                    {t('reviewPrompt')}
-                  </label>
-                  <textarea 
-                    value={reviewDraft}
-                    onChange={(e) => setReviewDraft(e.target.value)}
-                    placeholder={t('reviewPlaceholder')}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 text-sm font-medium focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all h-32 resize-none"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <button 
-                    onClick={handleAiPolish}
-                    disabled={!reviewDraft.trim() || isPolishing}
-                    className="w-full bg-slate-900 text-white rounded-2xl py-4 font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 shadow-xl shadow-slate-200"
-                  >
-                    {isPolishing ? (
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    ) : (
-                        <Sparkles size={18} className="text-blue-400" />
-                    )}
-                    {t('polishBtn')}
-                  </button>
-
-                  <AnimatePresence>
-                    {polishedReview && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-4 p-6 bg-emerald-50 border border-emerald-100 rounded-3xl relative">
-                          <div className="absolute -top-3 left-6 bg-emerald-600 text-white text-[10px] font-black px-2 py-1 rounded-md uppercase tracking-wider">
-                            AI Polished Review
-                          </div>
-                          <p className="text-slate-700 text-sm leading-relaxed italic mb-6">
-                            "{polishedReview}"
-                          </p>
-                          <button 
-                            onClick={handleSubmitReview}
-                            className="w-full bg-emerald-600 text-white px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200"
-                          >
-                            <MessageSquareQuote size={18} />
-                            {t('submitReview')}
-                          </button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <AnimatePresence>
-                    {submittedStatus && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="p-4 bg-emerald-100 text-emerald-700 rounded-2xl text-center font-bold text-sm border border-emerald-200"
-                      >
-                        {t('reviewSuccess')}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {!polishedReview && reviewDraft.trim() && (
-                    <button 
-                      onClick={handleSubmitReview}
-                      className="w-full bg-slate-100 text-slate-800 rounded-2xl py-4 font-bold flex items-center justify-center gap-3 hover:bg-slate-200 transition-all"
-                    >
-                      {t('submitReview')} (Without AI Polish)
-                    </button>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* CEO Message Section */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-900 rounded-[3rem] p-8 md:p-16 relative shadow-2xl shadow-slate-200 overflow-hidden">
-            {/* Background Accents */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-[120px] opacity-10 -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500 rounded-full blur-[120px] opacity-10 translate-y-1/2 -translate-x-1/2"></div>
-            
-            <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-              {/* Profile Image with Circle Crop */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="relative mb-12"
-              >
-                <div className="relative group">
-                  {/* Outer glowing ring */}
-                  <div className="absolute inset-0 bg-emerald-500 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                  
-                  {/* Image Border/Frame - Square container with rounded-full creates a circle */}
-                  <div className="w-64 h-64 md:w-72 md:h-72 aspect-square rounded-full border-[12px] border-slate-800 p-2 bg-gradient-to-br from-slate-700 to-slate-900 shadow-2xl relative overflow-hidden">
-                    <img 
-                      src="input_file_0.png" 
-                      alt={t('ceoName')} 
-                      className="w-full h-full object-cover rounded-full transform group-hover:scale-105 transition-transform duration-700" 
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  
-                  {/* Floating Badge */}
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap bg-emerald-500 text-white px-8 py-3 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] border-4 border-slate-900">
-                    {t('ceoTitle')}
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="space-y-10"
-              >
-                <div className="relative pt-8">
-                  <span className="text-8xl text-emerald-500/10 absolute -top-4 left-1/2 -translate-x-1/2 font-serif select-none italic">"</span>
-                  <p className="text-2xl md:text-4xl leading-relaxed font-semibold italic text-slate-100 relative z-10 tracking-tight">
-                    {t('ceoMessage')}
-                  </p>
-                  <span className="text-8xl text-emerald-500/10 absolute -bottom-16 left-1/2 -translate-x-1/2 font-serif select-none rotate-180 italic">"</span>
-                </div>
-                
-                <div className="pt-12 border-t border-white/5 flex flex-col items-center">
-                  <h4 className="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
-                    {t('ceoName')}
-                  </h4>
-                  <div className="h-1.5 w-16 bg-emerald-500 rounded-full mb-4"></div>
-                  <p className="text-emerald-400 text-sm font-black uppercase tracking-[0.4em]">{t('ceoRole')}</p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Digital Catalog Section */}
-      <section id="flyers" className="py-24 bg-slate-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6"
-            >
-              <Sparkles size={14} />
-              <span>Visual Gallery</span>
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight"
-            >
-              Our Digital Catalog
-            </motion.h2>
-            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-              Explore our comprehensive service posters and banners for quick information on all our professional solutions.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[
-                  { id: '1', src: "input_file_4.png", title: "Expert Services Overview" },
-                  { id: '2', src: "input_file_1.png", title: "GST Registration Guide" },
-                  { id: '3', src: "input_file_2.png", title: "PAN & Aadhaar Corrections" },
-                  { id: '4', src: "input_file_3.png", title: "Our Comprehensive Solutions" },
-                  { id: '5', src: "input_file_5.png", title: "Personal Loan Assistance" },
-                  { id: '6', src: "input_file_6.png", title: "FSSAI Food License" },
-                  { id: '7', src: "input_file_7.png", title: "Same Day GST Services" },
-                  { id: '8', src: "input_file_8.png", title: "Quick Personal Loans" }
-                ].map((flyer, i) => (
-                  <motion.div
-                    key={flyer.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    onClick={() => setSelectedFlyer(flyer.src)}
-                    className="group relative bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all cursor-pointer shadow-xl"
-                  >
-                    <img 
-                      src={flyer.src} 
-                      alt={flyer.title} 
-                      className="w-full h-auto transition-transform duration-700 group-hover:scale-110"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-emerald-400 text-xs font-black uppercase tracking-widest mb-1">{flyer.title}</p>
-                      <p className="text-white text-sm font-medium">Click to enlarge</p>
-                    </div>
-                  </motion.div>
-                ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Image Modal Lightbox */}
-      <AnimatePresence>
-        {selectedFlyer && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedFlyer(null)}
-            className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-pointer"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-5xl w-full max-h-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelectedFlyer(null)}
-                className="absolute -top-12 right-0 text-white hover:text-emerald-400 transition-colors bg-white/10 p-2 rounded-full backdrop-blur-md"
-              >
-                <X size={24} />
-              </button>
-              <div className="overflow-hidden rounded-3xl shadow-2xl border border-white/10">
-                <img 
-                  src={selectedFlyer} 
-                  className="w-full h-auto"
-                  alt="Full Poster"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Testimonials Section */}
       <section className="py-24 bg-slate-50 overflow-hidden">
@@ -1847,16 +1484,73 @@ Feedback: ${reviewDraft}`;
           </div>
         </div>
       </footer>
-
-      <ExpiteeChatbot 
-        language={lang} 
-        userName={user?.displayName || (user?.email ? user.email.split('@')[0] : 'Guest')} 
-      />
-
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)} 
-      />
+      {/* Expitee WhatsApp Floating Button */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <motion.a
+          href="https://wa.me/917410129655?text=Hi Expitee, I need assistance with your services."
+          target="_blank"
+          rel="no-referrer"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="flex items-center gap-3 bg-emerald-600 text-white pl-4 pr-6 py-4 rounded-full shadow-2xl shadow-emerald-200/50 hover:bg-emerald-700 transition-all group"
+        >
+          <div className="bg-white/20 p-2 rounded-full">
+            <MessageSquare size={24} className="animate-pulse" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80 leading-none">Chat with</span>
+            <span className="text-lg font-bold leading-tight">Expitee</span>
+          </div>
+        </motion.a>
+      </div>
+      {/* Image Modal Lightbox */}
+      <AnimatePresence>
+        {selectedFlyer && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedFlyer(null)}
+            className="fixed inset-0 z-[100] bg-slate-950/98 backdrop-blur-2xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-4xl w-full max-h-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedFlyer(null)}
+                className="absolute -top-12 sm:-top-16 right-0 text-white hover:text-emerald-400 transition-colors bg-white/10 p-3 rounded-full backdrop-blur-md border border-white/10"
+              >
+                <X size={28} />
+              </button>
+              <div className="overflow-hidden rounded-3xl shadow-3xl border border-white/10 bg-slate-900">
+                <img 
+                  src={selectedFlyer} 
+                  className="w-full h-auto max-h-[80vh] object-contain"
+                  alt="Full Service Flyer"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="mt-6 flex justify-center">
+                <a 
+                  href={`https://wa.me/917410129655?text=Hi, I am interested in the service shown in this flyer: ${selectedFlyer}`}
+                  target="_blank"
+                  rel="no-referrer"
+                  className="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-xl shadow-emerald-500/20"
+                >
+                  <MessageSquare size={18} />
+                  Enquire about this Service
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
