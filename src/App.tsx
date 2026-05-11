@@ -644,10 +644,35 @@ export default function App() {
     setBookingData(prev => ({ ...prev, [name]: value }));
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 overflow-x-hidden">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2 sm:gap-3">
@@ -761,42 +786,42 @@ export default function App() {
             </div>
           </motion.div>
         )}
-      </nav>
+      </motion.nav>
 
       {/* Hero Section */}
       <section className="relative pt-12 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
-                {t('heroTitle')}
-              </h1>
-              <p className="text-lg text-slate-600 mb-8 max-w-lg leading-relaxed">
-                {t('heroSub')}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a 
-                  href="https://wa.me/917410129655?text=Hi, I would like to inquire about your expert tax and digital services." 
-                  target="_blank"
-                  rel="no-referrer"
-                  className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center gap-2 group active:scale-95"
-                >
-                  Enquire via WhatsApp
-                  <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a 
-                  href="tel:7410129655" 
-                  className="bg-emerald-500 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-100 flex items-center gap-2 active:scale-95"
-                >
-                  <Phone size={20} />
-                  Call Now
-                </a>
-              </div>
-            </motion.div>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6">
+                  {t('heroTitle')}
+                </motion.h1>
+                <motion.p variants={itemVariants} className="text-lg text-slate-600 mb-8 max-w-lg leading-relaxed">
+                  {t('heroSub')}
+                </motion.p>
+                <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+                  <a 
+                    href="https://wa.me/917410129655?text=Hi, I would like to inquire about your expert tax and digital services." 
+                    target="_blank"
+                    rel="no-referrer"
+                    className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center gap-2 group active:scale-95"
+                  >
+                    Enquire via WhatsApp
+                    <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a 
+                    href="tel:7410129655" 
+                    className="bg-emerald-500 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-100 flex items-center gap-2 active:scale-95"
+                  >
+                    <Phone size={20} />
+                    Call Now
+                  </a>
+                </motion.div>
+              </motion.div>
             
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -884,16 +909,20 @@ export default function App() {
           </motion.div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
           {filteredServices.length > 0 ? (
             filteredServices.map((service, index) => (
               <motion.div
                 key={service.title}
+                variants={itemVariants}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2 }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
                 className="group relative flex flex-col h-full bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-100/50 overflow-hidden hover:shadow-2xl hover:shadow-emerald-200/50 transition-all"
               >
                 {/* Service Image */}
@@ -978,7 +1007,7 @@ export default function App() {
               <p className="text-slate-500">Try adjusting your search query or category.</p>
             </div>
           )}
-        </div>
+        </motion.div>
       </section>
 
 
@@ -1010,7 +1039,13 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+          >
                 {[
                   { id: '1', src: "https://lh3.googleusercontent.com/d/1AxuQ-bB0pFnth-yQTvI-2HugPvuFpUbx", title: "FSSAI Food License" },
                   { id: '2', src: "https://lh3.googleusercontent.com/d/1GpyB0-ciiUznnwbiecTk6c-gmzPGAc6j", title: "GST Registration" },
@@ -1043,10 +1078,7 @@ export default function App() {
                 ].map((flyer, i) => (
                   <motion.div
                     key={flyer.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
+                    variants={itemVariants}
                     onClick={() => {
                       setSelectedFlyer(flyer.src);
                       const text = `Hi, I am interested in the ${flyer.title} service I saw in your gallery. Please guide me.`;
@@ -1054,6 +1086,8 @@ export default function App() {
                         window.open(`https://wa.me/917410129655?text=${encodeURIComponent(text)}`, '_blank');
                       }, 1000); // Small delay to let user see the image first as requested ("image need to show and redirected")
                     }}
+                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.98 }}
                     className="group relative bg-slate-800 rounded-2xl sm:rounded-[2rem] overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all cursor-pointer shadow-xl"
                   >
                     <img 
@@ -1071,7 +1105,7 @@ export default function App() {
                     </div>
                   </motion.div>
                 ))}
-          </div>
+          </motion.div>
           
           <div className="mt-16 text-center">
             <a 
@@ -1104,14 +1138,17 @@ export default function App() {
                 >
                   Why Partner With Us?
                 </motion.h3>
-                <div className="space-y-6">
-                  {features.map((feature, i) => (
+                <motion.div 
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="space-y-6"
+                >
+                  {features.map((feature) => (
                     <motion.div 
                       key={feature} 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
+                      variants={itemVariants}
                       className="flex items-center gap-4 text-lg"
                     >
                       <div className="bg-emerald-500 p-1.5 rounded-full ring-4 ring-emerald-500/20">
@@ -1120,7 +1157,7 @@ export default function App() {
                       <span className="font-medium">{feature}</span>
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
               
               <div className="bg-white/10 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/20">
@@ -1318,12 +1355,17 @@ export default function App() {
             </motion.div>
 
             {/* Contact Info */}
-            <div className="lg:col-span-5 space-y-8">
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="lg:col-span-5 space-y-8"
+            >
               <div className="space-y-6">
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-lg shadow-slate-50 flex items-start gap-6 group hover:border-blue-200 transition-colors"
                 >
                   <div className="bg-blue-100 p-4 rounded-2xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -1339,10 +1381,8 @@ export default function App() {
                 </motion.div>
 
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-lg shadow-slate-50 flex items-start gap-6 group hover:border-emerald-200 transition-colors"
                 >
                   <div className="bg-emerald-100 p-4 rounded-2xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
@@ -1358,10 +1398,8 @@ export default function App() {
                 </motion.div>
 
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-lg shadow-slate-50 flex items-start gap-6"
                 >
                   <div className="bg-emerald-100 p-4 rounded-2xl text-emerald-600">
@@ -1383,7 +1421,7 @@ export default function App() {
                 </motion.div>
               </div>
 
-              <div className="bg-blue-900 p-8 rounded-[2rem] text-white overflow-hidden relative">
+              <motion.div variants={itemVariants} className="bg-blue-900 p-8 rounded-[2rem] text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-800 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
                 <h5 className="text-xl font-bold mb-4 relative z-10">Visit Our Office</h5>
                 <div className="flex items-start gap-3 text-blue-100 text-sm mb-6 relative z-10">
@@ -1393,8 +1431,8 @@ export default function App() {
                 <div className="pt-4 border-t border-blue-800 text-xs text-blue-300 relative z-10">
                   Working Hours: 10:00 AM - 08:00 PM (Mon-Sat)
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -1710,10 +1748,21 @@ export default function App() {
       </section>
 
       {/* Areas Served & SEO Section */}
-      <section className="bg-slate-50 py-16 border-t border-slate-200">
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="bg-slate-50 py-16 border-t border-slate-200"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-12"
+          >
+            <motion.div variants={itemVariants}>
               <h3 className="text-xl font-black text-slate-900 mb-6 uppercase tracking-wider">Areas We Serve</h3>
               <div className="flex flex-wrap gap-2 text-sm text-slate-600">
                 {["All India", "Boisar", "Palghar", "Dahanu", "Manor", "Vasai", "Virar", "Jawhar", "Saphale", "Kelve", "Boisar East", "Boisar West", "Umroli", "Maharashtra", "Gujarat", "Nashik", "Pune", "Solapur", "Mumbai", "Madhya Pradesh"].map(area => (
@@ -1723,8 +1772,8 @@ export default function App() {
               <p className="mt-4 text-slate-500 text-sm italic">
                 Providing affordable service and competitive prices at low cost since 2018. Apply now or enquire now for instant services and instant satisfaction.
               </p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div variants={itemVariants}>
               <h3 className="text-xl font-black text-slate-900 mb-6 uppercase tracking-wider">Our Commitment</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -1746,14 +1795,19 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8"
+        >
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3 mb-4">
               <Logo size={48} className="bg-white rounded-full p-1 shadow-lg" />
@@ -1775,16 +1829,22 @@ export default function App() {
             <div className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Address</div>
             <p>Shop No. 13, Siddhi Vinayak Darshan Bldg, <br />Kashibaiwadi, Pasthal, Boisar, Palghar 401504</p>
           </div>
-        </div>
+        </motion.div>
         
-        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs text-center">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs text-center"
+        >
           <p>© 2026 EXPERT TAX AND DIGITAL SERVICES. All rights reserved.</p>
           <div className="flex gap-6">
             <button onClick={() => setShowLegal(true)} className="hover:text-white transition-colors">Privacy Policy</button>
             <button onClick={() => setShowLegal(true)} className="hover:text-white transition-colors">Terms of Service</button>
             <button onClick={() => setShowLegal(true)} className="hover:text-white transition-colors">Disclaimer</button>
           </div>
-        </div>
+        </motion.div>
       </footer>
 
       {/* Legal Modal */}
