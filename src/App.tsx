@@ -49,11 +49,21 @@ import {
   Star,
   Languages,
   MessageSquareQuote,
-  PenLine
+  PenLine,
+  Navigation,
+  ExternalLink
 } from 'lucide-react';
 import { useState, useMemo, type FormEvent, type ChangeEvent } from 'react';
+import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import { cn } from './lib/utils';
 import Logo from './components/Logo';
+
+const API_KEY =
+  process.env.GOOGLE_MAPS_PLATFORM_KEY ||
+  (import.meta as any).env?.VITE_GOOGLE_MAPS_PLATFORM_KEY ||
+  (globalThis as any).GOOGLE_MAPS_PLATFORM_KEY ||
+  '';
+const hasValidKey = Boolean(API_KEY) && API_KEY !== 'YOUR_API_KEY';
 
 type Language = 'en' | 'hi' | 'mr' | 'gu';
 
@@ -536,6 +546,12 @@ const features = [
 
 const areas = ["Boisar", "Palghar", "Dahanu", "Tarapur", "Maharashtra"];
 
+const BUSINESS_LOCATION = {
+  lat: 19.8078,
+  lng: 72.7483,
+  address: "Shop No. 13, Siddhi Vinayak Darshan Bldg, Kashibaiwadi, Pasthal, Boisar, Palghar 401504"
+};
+
 export default function App() {
   const [lang, setLang] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -577,6 +593,43 @@ export default function App() {
 
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedFlyer, setSelectedFlyer] = useState<string | null>(null);
+
+  if (!hasValidKey) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 p-6 font-sans">
+        <div className="max-w-2xl w-full bg-white rounded-[3rem] shadow-2xl shadow-slate-200 border border-slate-100 p-8 sm:p-12 text-center">
+            <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-blue-100">
+                <MapPin size={40} />
+            </div>
+          <h2 className="text-3xl font-black text-slate-900 mb-6 tracking-tight">Google Maps API Key Required</h2>
+          <div className="space-y-6 text-slate-600 leading-relaxed mb-10">
+            <p className="font-medium text-lg text-slate-800">Please follow these steps to enable the "Nearby" feature:</p>
+            <div className="grid gap-4 text-left">
+                <div className="flex gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shrink-0">1</div>
+                    <p>Get a Google Maps API key from the <a href="https://console.cloud.google.com/google/maps-apis/start" target="_blank" rel="noopener" className="text-blue-600 font-bold hover:underline">Google Cloud Console</a>.</p>
+                </div>
+                <div className="flex gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shrink-0">2</div>
+                    <div>
+                        <p>Add your key as a secret in AI Studio:</p>
+                        <ul className="mt-2 list-disc list-inside space-y-1 text-sm">
+                            <li>Open <strong>Settings</strong> (⚙️ gear icon, top-right)</li>
+                            <li>Select <strong>Secrets</strong></li>
+                            <li>Add <code>GOOGLE_MAPS_PLATFORM_KEY</code> as the name</li>
+                            <li>Paste your API key as the value</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-emerald-800 text-sm font-medium">
+            The application will rebuild automatically once the key is added.
+          </div>
+        </div>
+      </div>
+    );
+  }
   const [searchQuery, setSearchQuery] = useState('');
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
 
@@ -633,7 +686,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 overflow-x-hidden">
+    <APIProvider apiKey={API_KEY} version="weekly">
+      <div className="min-h-screen bg-slate-50 font-sans text-slate-900 overflow-x-hidden">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1581,6 +1635,146 @@ export default function App() {
         </div>
       </section>
 
+      {/* Nearby / Visit Us Section */}
+      <section id="nearby" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-white to-transparent"></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:w-1/2 space-y-8"
+            >
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold tracking-wide">
+                <Navigation size={16} />
+                <span>Visit Our Office</span>
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.1]">
+                We are <span className="text-blue-600">Nearby</span> in Boisar
+              </h2>
+              <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
+                Located in the heart of Pasthal, our office is easily accessible for all your tax, legal, and digital service needs. Drop by for a face-to-face consultation.
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex gap-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50">
+                    <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+                        <MapPin size={24} />
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-slate-900 mb-1">Our Address</h4>
+                        <p className="text-slate-500 text-sm leading-relaxed">{BUSINESS_LOCATION.address}</p>
+                    </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-4">
+                    <a 
+                      href="https://www.google.com/maps/dir/?api=1&destination=Shop+No.+13,+Siddhi+Vinayak+Darshan+Bldg,+Pasthal,+Boisar" 
+                      target="_blank" 
+                      rel="noopener"
+                      className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20"
+                    >
+                        <Navigation size={18} />
+                        Get Directions
+                    </a>
+                    <a 
+                      href="tel:+917410129655" 
+                      className="inline-flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-all shadow-lg shadow-slate-100"
+                    >
+                        <Phone size={18} />
+                        Call Us
+                    </a>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="lg:w-1/2 w-full h-[500px] rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl shadow-slate-200 relative group"
+            >
+              <Map
+                defaultCenter={{lat: BUSINESS_LOCATION.lat, lng: BUSINESS_LOCATION.lng}}
+                defaultZoom={15}
+                mapId="DEMO_MAP_ID"
+                internalUsageAttributionIds={['gmp_mcp_codeassist_v1_aistudio']}
+                className="w-full h-full"
+                gestureHandling="greedy"
+                disableDefaultUI
+              >
+                <AdvancedMarker position={{lat: BUSINESS_LOCATION.lat, lng: BUSINESS_LOCATION.lng}}>
+                   <Pin background="#2563eb" glyphColor="#fff" borderColor="#1e40af" />
+                </AdvancedMarker>
+              </Map>
+              
+              <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-xl flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white">
+                        <MapPin size={20} />
+                    </div>
+                    <div>
+                        <div className="text-xs font-black uppercase tracking-widest text-slate-400 leading-none mb-1">Office Location</div>
+                        <div className="text-sm font-bold text-slate-900 leading-none">Pasthal, Boisar</div>
+                    </div>
+                </div>
+                <a 
+                  href="https://maps.google.com" 
+                  target="_blank" 
+                  rel="noopener"
+                  className="bg-slate-900 text-white p-2 rounded-lg hover:bg-slate-800 transition-colors"
+                >
+                    <ExternalLink size={18} />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Areas Served & SEO Section */}
+      <section className="bg-slate-50 py-16 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-xl font-black text-slate-900 mb-6 uppercase tracking-wider">Areas We Serve</h3>
+              <div className="flex flex-wrap gap-2 text-sm text-slate-600">
+                {["All India", "Boisar", "Palghar", "Dahanu", "Manor", "Vasai", "Virar", "Jawhar", "Saphale", "Kelve", "Boisar East", "Boisar West", "Umroli", "Maharashtra", "Gujarat", "Nashik", "Pune", "Solapur", "Mumbai", "Madhya Pradesh"].map(area => (
+                  <span key={area} className="bg-white border border-slate-200 px-3 py-1 rounded-full">{area}</span>
+                ))}
+              </div>
+              <p className="mt-4 text-slate-500 text-sm italic">
+                Providing affordable service and competitive prices at low cost since 2018. Apply now or enquire now for instant services and instant satisfaction.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-black text-slate-900 mb-6 uppercase tracking-wider">Our Commitment</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-emerald-100 text-emerald-600 p-1 rounded-md mt-1">
+                    <CheckCircle2 size={16} />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-slate-800">Affordable Solutions</h5>
+                    <p className="text-xs text-slate-500">Competitive price models designed for small businesses across Maharashtra and Gujarat.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-blue-100 text-blue-600 p-1 rounded-md mt-1">
+                    <Zap size={16} />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-slate-800">Instant Services</h5>
+                    <p className="text-xs text-slate-500">Fastest processing times in Palghar and Boisar. We value your time.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
@@ -1682,6 +1876,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </APIProvider>
   );
 }
