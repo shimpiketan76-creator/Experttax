@@ -1,6 +1,6 @@
 {
   "name": "EXPERT TAX AND DIGITAL SERVICES",
   "description": "Fast, reliable, and affordable legal and digital services in Boisar, Palghar, Dahanu, and All India. Supporting English, Marathi, Hindi, and Gujarati. Features Expitee AI chatbot for instant support. Instant services with instant satisfaction.",
-  "requestFramePermissions": ["geolocation"],
+  "requestFramePermissions": [],
   "majorCapabilities": []
 }

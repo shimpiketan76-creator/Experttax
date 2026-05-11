@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "Application": {
+      "title": "Service Application",
+      "description": "Form submission from users applying for services",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the applicant" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "email": { "type": "string", "description": "Email address" },
+        "serviceType": { "type": "string", "description": "The service applied for" },
+        "businessType": { "type": "string", "enum": ["Individual", "Business/LLP"] },
+        "message": { "type": "string", "description": "Additional requirements" },
+        "status": { "type": "string", "enum": ["Pending", "In Review", "Completed", "Rejected"], "description": "Application status" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Submission time" }
+      },
+      "required": ["name", "phone", "serviceType", "createdAt"]
+    }
+  },
+  "firestore": {
+    "applications/{applicationId}": {
+      "schema": "Application",
+      "description": "Collection of all service applications"
+    }
+  }
+}
