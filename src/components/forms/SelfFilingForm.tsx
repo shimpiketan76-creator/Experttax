@@ -16,7 +16,8 @@ export default function SelfFilingForm({ services, onSuccess }: Props) {
     email: '',
     serviceType: '',
     message: '',
-    businessType: 'Individual'
+    businessType: 'Individual',
+    agreed: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -184,6 +185,22 @@ export default function SelfFilingForm({ services, onSuccess }: Props) {
                   />
                 </div>
 
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border-2 border-transparent hover:border-slate-200 transition-all">
+                    <input 
+                      id="consent"
+                      type="checkbox"
+                      required
+                      checked={formData.agreed}
+                      onChange={e => setFormData({...formData, agreed: e.target.checked})}
+                      className="mt-1 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                    />
+                    <label htmlFor="consent" className="text-xs text-slate-600 leading-relaxed cursor-pointer select-none">
+                      I agree that services are provided based on the documents I provide. I have received consent from the applicant (if different). I understand that **no legal action can be taken against the company** for departmental outcomes. Official website: www.experttaxindia.com
+                    </label>
+                  </div>
+                </div>
+
                 <div className="flex gap-4 pt-4">
                   <button 
                     type="button"
@@ -194,7 +211,7 @@ export default function SelfFilingForm({ services, onSuccess }: Props) {
                   </button>
                   <button 
                     type="submit"
-                    disabled={isSubmitting || !formData.serviceType}
+                    disabled={isSubmitting || !formData.serviceType || !formData.agreed}
                     className="flex-[2] bg-emerald-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-emerald-700 disabled:opacity-50 transition-all shadow-xl shadow-emerald-200"
                   >
                     {isSubmitting ? (

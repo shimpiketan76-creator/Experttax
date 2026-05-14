@@ -44,8 +44,12 @@ export default function LegalTerms({ onClose }: Props) {
                 Disclaimer
               </h3>
               <div className="space-y-4 text-slate-600 leading-relaxed">
-                <p className="font-bold text-slate-900">Welcome to EXPERT TAX AND DIGITAL SERVICES® (“Company”, “we”, “our”, “us”).</p>
+                <p className="font-bold text-slate-900">Welcome to EXPERT TAX AND DIGITAL SERVICES® (“Company”, “we”, “our”, “us”). Official Website: www.experttaxindia.com</p>
                 <p>By accessing or using our website, services, consultation, digital assistance, registrations, documentation support, compliance services, taxation services, licensing assistance, or any related communication channels including WhatsApp, email, phone calls, social media, and third-party portals, you agree to the following disclaimer and terms.</p>
+                
+                <h4 className="font-bold text-slate-900 mt-6 uppercase text-xs tracking-widest">Document-Based Services & Consent</h4>
+                <p>We provide services strictly on the basis of documents and information provided by the customer. It is the customer's sole responsibility to ensure that all documents submitted are genuine, valid, and legally obtained.</p>
+                <p>By applying for any service, the customer provides their express consent for the Company to process their documents and information on their behalf. Use of our services constitutes agreed and binding consent.</p>
                 
                 <h4 className="font-bold text-slate-900 mt-6 uppercase text-xs tracking-widest">General Information Only</h4>
                 <p>All information, guidance, consultation, documentation support, templates, and services provided by EXPERT TAX AND DIGITAL SERVICES are intended solely for general informational and facilitation purposes. We are not a government authority, regulatory body, legal court, or statutory department.</p>
@@ -89,9 +93,12 @@ export default function LegalTerms({ onClose }: Props) {
               </div>
 
               <div className="mt-8 pt-8 border-t border-slate-200">
-                <h4 className="font-bold text-slate-900 mb-4 uppercase text-xs tracking-widest">No Legal or Financial Liability</h4>
+                <h4 className="font-bold text-slate-900 mb-4 uppercase text-xs tracking-widest">No Legal Action & Liability Waiver</h4>
                 <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                  By using our services, the client expressly agrees that the Company shall not be subjected to legal action, claims, compensation demands, damages, litigation, or disputes arising from service outcomes. Any dispute shall first be attempted to be resolved amicably through mutual communication. Clients waive the right to initiate defamatory legal proceedings against the Company for departmental outcomes beyond the Company’s control.
+                  By using or applying for our services, the client expressly agrees and declares that **no legal action, claims, compensation demands, damages, litigation, or disputes shall be initiated or taken against EXPERT TAX AND DIGITAL SERVICES, its proprietor, or employees** for any service outcomes, departmental delays, or rejections. 
+                </p>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4 font-bold">
+                  The client acknowledges that we act solely as a facilitator based on customer-provided documents and consent. Any dispute shall first be attempted to be resolved amicably through mutual communication. Clients waive the right to initiate defamatory legal proceedings against the Company for departmental outcomes beyond the Company’s control.
                 </p>
                 
                 <div className="grid sm:grid-cols-3 gap-4 text-xs font-bold mt-6">
@@ -100,8 +107,8 @@ export default function LegalTerms({ onClose }: Props) {
                     <span className="text-slate-900 font-black uppercase tracking-tight">Palghar, Maharashtra</span>
                   </div>
                   <div className="p-4 bg-white rounded-2xl border border-slate-100">
-                    <span className="text-slate-400 block mb-1 uppercase text-[8px] tracking-widests">Email</span>
-                    <span className="text-slate-900 font-black tracking-tight lowercase">experttaxndigitalservices@gmail.com</span>
+                    <span className="text-slate-400 block mb-1 uppercase text-[8px] tracking-widests">Official Website</span>
+                    <span className="text-slate-900 font-black tracking-tight lowercase">www.experttaxindia.com</span>
                   </div>
                   <div className="p-4 bg-white rounded-2xl border border-slate-100">
                     <span className="text-slate-400 block mb-1 uppercase text-[8px] tracking-widests">Last Updated</span>
