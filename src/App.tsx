@@ -710,6 +710,7 @@ export default function App() {
               <a href="#services" className="text-sm font-medium hover:text-emerald-600 transition-colors uppercase tracking-widest text-[10px] font-black">{t('ourServices')}</a>
               <a href="#calculators" className="text-sm font-medium hover:text-emerald-600 transition-colors uppercase tracking-widest text-[10px] font-black">Free Tools</a>
               <a href="#enquiry" className="text-sm font-medium hover:text-emerald-600 transition-colors uppercase tracking-widest text-[10px] font-black">Apply Now</a>
+              <a href="#disclaimer-notice" className="text-sm font-medium hover:text-emerald-600 transition-colors uppercase tracking-widest text-[10px] font-black text-red-500">Disclaimer</a>
               <a href="#contact" className="text-sm font-medium hover:text-emerald-600 transition-colors uppercase tracking-widest text-[10px] font-black">{t('contactUs')}</a>
 
               <a 
@@ -765,6 +766,7 @@ export default function App() {
             <a href="#services" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">{t('ourServices')}</a>
             <a href="#enquiry" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">Apply Now</a>
             <a href="#calculators" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">Tools</a>
+            <a href="#disclaimer-notice" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium text-red-500">Disclaimer & Terms</a>
             <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg font-medium">{t('contactUs')}</a>
             <div className="grid grid-cols-2 gap-3 pt-2">
               <a 
@@ -1744,6 +1746,80 @@ export default function App() {
                     </motion.div>
                 ))}
             </div>
+        </div>
+      </section>
+
+      {/* Legal Notice, Disclaimer & Terms Section */}
+      <section id="disclaimer-notice" className="py-24 bg-slate-950 text-white relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-red-900/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-[3rem] p-8 sm:p-12 lg:p-16 shadow-2xl">
+            <div className="flex flex-col lg:flex-row gap-12 items-start">
+              <div className="flex-1 space-y-6">
+                <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-2 rounded-full text-xs font-black tracking-widest uppercase border border-red-500/20">
+                  <ShieldCheck size={14} className="text-red-400" />
+                  <span>Important Disclaimer & Public Notice</span>
+                </div>
+                <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                  Public Disclaimer & <br />
+                  <span className="text-emerald-400">Terms of Service</span>
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Welcome to <strong className="text-white">EXPERT TAX AND DIGITAL SERVICES®</strong>. Our official website is <a href="https://www.experttaxindia.com" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 font-bold underline">www.experttaxindia.com</a>. Please review our essential disclaimer and regulatory guidelines before applying or engaging our facilitation services.
+                </p>
+                <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800/80">
+                  <p className="text-xs text-slate-400 leading-relaxed italic">
+                    All consultation, templates, and digital services are provided strictly on an application facilitation and documentation-support basis. We are a private consultancy and not affiliated with any government department or official regulatory body.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex-[1.2] space-y-6 self-stretch">
+                <div className="grid gap-4">
+                  
+                  <div className="p-6 bg-slate-150/5 hover:bg-slate-150/10 transition-all border border-slate-800/60 rounded-[1.8rem] flex gap-4 bg-slate-950/40">
+                    <div className="p-3 bg-red-500/15 text-red-400 rounded-xl h-fit shrink-0">
+                      <ShieldAlert size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-base mb-1">No Legal Action Taken Against Company</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        By using, submitting, or applying for our consultancy, compliance, documentation, registration, licensing, or filing support services, <strong className="text-slate-200">the client and applicant expressly agree that no legal action, litigation, compensation claims, demands, damages, or disputes of any form shall be initiated or taken against EXPERT TAX AND DIGITAL SERVICES, its proprietor, or team</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-6 bg-slate-150/5 hover:bg-slate-150/10 transition-all border border-slate-800/60 rounded-[1.8rem] flex gap-4 bg-slate-950/40">
+                    <div className="p-3 bg-blue-500/15 text-blue-400 rounded-xl h-fit shrink-0">
+                      <FileCheck2 size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-base mb-1">Processing on Basis of Provided Documents</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        All compliance and filing submissions are completed solely on the basis of original hard/soft copies of documents, accounts, and information provided by the customer. The customer is 100% legally responsible for verifying document accuracy and validity.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-6 bg-slate-150/5 hover:bg-slate-150/10 transition-all border border-slate-800/60 rounded-[1.8rem] flex gap-4 bg-slate-950/40">
+                    <div className="p-3 bg-emerald-500/15 text-emerald-400 rounded-xl h-fit shrink-0">
+                      <UserCheck size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-base mb-1">Consent & Agreement Received</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        By engaging us or submitting request files, the customer explicitly confirms they have received full consent from the primary applicant or legal entity representative. Continuous use of this web application constitutes full agreed compliance.
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

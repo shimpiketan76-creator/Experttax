@@ -25,9 +25,28 @@ export default function SelfFilingForm({ services, onSuccess }: Props) {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Static simulation for now - Will connect to Firebase once ready
-    await new Promise(r => setTimeout(r, 2000));
+    // Save application to localStorage for offline persistence
+    const newApp = {
+      id: Math.random().toString(36).substring(2, 9),
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      serviceType: formData.serviceType,
+      message: formData.message,
+      businessType: formData.businessType,
+      createdAt: { seconds: Math.floor(Date.now() / 1000) }
+    };
     
+    try {
+      const existing = localStorage.getItem('expert_applications');
+      const list = existing ? JSON.parse(existing) : [];
+      list.unshift(newApp);
+      localStorage.setItem('expert_applications', JSON.stringify(list));
+    } catch (err) {
+      console.error("Failed to persist application locally:", err);
+    }
+
+    await new Promise(r => setTimeout(r, 1200));
     setIsSubmitting(false);
     onSuccess();
   };

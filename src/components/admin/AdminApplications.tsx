@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
 import { FileText, Clock, User, Phone, CheckCircle2 } from 'lucide-react';
 
 export default function AdminApplications() {
@@ -8,13 +6,15 @@ export default function AdminApplications() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q = query(collection(db, 'applications'), orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setApps(data);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    const rawApps = localStorage.getItem('expert_applications');
+    if (rawApps) {
+      try {
+        setApps(JSON.parse(rawApps));
+      } catch (e) {
+        console.error("Error parsing applications", e);
+      }
+    }
+    setLoading(false);
   }, []);
 
   if (loading) return <div className="p-8 text-center text-slate-500">Loading applications...</div>;
